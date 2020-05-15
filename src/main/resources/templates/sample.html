@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+
+<style>
+  h1 { font-size:18px; font-weight:bold; color:gray;}
+  body { font-size:13px; color:red; margin:5px 25px;}
+</style>
+
+<title>Top page</title>
+</head>
+<body>
+
+  <h1>Hello Page</h1>
+  <p th:text="${msg}"></p>
+  
+  <form method="POST" action="/sample">
+    <input type="text" name="text1" th:value="${valtxt}" />
+    <input type="submit" value="click" />
+    
+    <div>
+      <input type="checkbox" id="check1" name="check1" th:checked="${valchk}" />
+      <label for="check1">チェック</label>
+    </div>
+    
+    <div>
+      <input type="radio" id="radioA" name="radio1" value="male" th:checked="${valrdoA}" />
+      <label for="radioA">男性</label>
+    </div>    
+    <div>
+      <input type="radio" id="radioB" name="radio1" value="female" th:checked="${valrdoB}"/>
+      <label for="radioB">女性</label>
+    </div>
+    
+    <select id="select1" name="select1" size=5>
+      <option value="sel1" th:selected="${valsel1}">学生</option>
+      <option value="sel2" th:selected="${valsel2}">会社員</option>
+      <option value="sel3" th:selected="${valsel3}">自営業</option>
+      <option value="sel4" th:selected="${valsel4}">その他</option>
+    </select>
+    
+  </form>
+  
+</body>
+</html>

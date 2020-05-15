@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Top Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+  h1 {font-size:18pt; font-weight:bold; color:gray; }
+  body { font-size:13pt; color:gray; margin:5px 25px; }
+  pre { font-size:13px; color:gray; padding:5px 10px; border:1px solid gray;}
+  tr { margin:5px; }
+  th { padding:5px; color:white; background:darkgray; }
+  td { padding:5px 20px; background:#eee; }
+  div.err { color: red;}
+</style>
+
+</head>
+<body>
+  <h1>ユーザ情報登録ページ</h1>
+  <p th:text="${msg}"></p>
+  <table>
+  
+  <form action="/user/search" method="POST">
+     <tr><td>Find:</td>
+      <td><input type="text"  name="fstr" size="20" th:value="${value}" />
+          <input type="submit" value="検索"/></td></tr>
+  </form>
+  
+  <form method="post" action="/user" th:object="${formModel}" >
+   
+   <input type="hidden" name="id" th:value="*{id}"/>
+   
+    <tr><td><label for="name">名前</label></td>
+      <td><input type="text" name="name" th:value="*{name}" th:errorclass="err" />
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" th:errorclass="err" ></div>
+    </td></tr>
+
+    <tr><td><label for="age">年齢</label></td>
+      <td><input type="text" name="age" th:value="*{age}" th:errorclass="err"/>
+          <div th:if="${#fields.hasErrors('age')}" th:errors="*{age}" th:errorclass="err"></div>
+     </td></tr>
+
+    <tr><td><label for="job">職業</label></td>
+      <td><input type="text" name="job" th:value="*{job}" th:errorclass="err"/>
+      <div th:if="${#fields.hasErrors('job')}" th:errors="*{job}" th:errorclass="err"></div>
+    </td></tr>
+
+    <tr><td></td><td><input type="submit" /></td></tr>
+  </form>
+
+  </table>
+
+<hr />
+<table>
+  <tr><th>ID</th><th>名前</th><th>削除</th></tr>
+  <tr th:each="obj : ${datalist}">
+    <td th:text="${obj.id}"></td>
+    <td th:text="${obj.name}"></td>
+    
+    <td>
+      <form th:action="@{/user/{id}(id=${obj.id})}" method="POST">
+        <input type="submit" value="削除"/>
+      </form>
+    </td>
+
+  </tr>
+</table>
+
+<div>
+  <ul>
+    <li style="display:inline;">
+      <span th:if="${page.first}">&lt;&lt;前</span>
+      <a
+        th:if="${!page.first}"
+        th:href="@{/user(page = ${page.number} - 1)}"
+      >
+        &lt;&lt;前
+      </a>
+    </li>
+    <li
+      th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+      style="display:inline; margin-left:10px;"
+    >
+      <span th:if="${i} == ${page.number}" th:text="${i + 1}">1</span>
+      <a
+        th:if="${i} != ${page.number}"
+        th:href="@{/user(page = ${i})}"
+      >
+        <span th:text="${i+1}">1</span>
+      </a>
+    </li>
+    <li style="display:inline; margin-left:10px;">
+      <span th:if="${page.last}">次&gt;&gt;</span>
+      <a
+        th:if="${!page.last}"
+        th:href="@{/user(page = (${page.number} + 1))}"
+      >
+        次&gt;&gt;
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+</body>
+
+</html>
